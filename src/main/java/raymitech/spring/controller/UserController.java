@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import raymitech.spring.Exceptions.NotFoundException;
 import raymitech.spring.entities.User;
-import raymitech.spring.services.interfaces.IUserService;
+import raymitech.spring.security.serviceImp.IUserService;
 
 @RestController
 @RequestMapping("/api/user")

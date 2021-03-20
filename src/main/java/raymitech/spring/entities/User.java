@@ -1,7 +1,9 @@
 package raymitech.spring.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,11 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import raymitech.spring.security.entities.Rol;
 
 @Table(name="User")
 @Entity
@@ -34,14 +40,16 @@ public class User  implements Serializable{
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="user_name")
+	//@Column(name="user_name")
+	@Column(unique = true)
 	private String userName;
 	
 	@Column(name="email")
 	private String email;
 	
-
-	
+	@Column(name="password")
+	private String password;
+		
 	@JoinColumn(name="fk_institute", referencedColumnName="id_institute")
 	@ManyToOne	
 	@JsonIgnore
@@ -50,8 +58,36 @@ public class User  implements Serializable{
 	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
 	private List<Post> post;
 	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="usuario_rol",joinColumns=@JoinColumn(name="usuario_id"),
+	inverseJoinColumns=@JoinColumn(name="rol_id"))
+	private Set<Rol> roles=new HashSet<>();
+
+	
+	public User(String name, String userName, String email, String password) {
+		super();
+		this.name = name;
+		this.userName = userName;
+		this.email = email;
+		this.password = password;
+	
+	}
 	public User() {
 		super();
+	}
+	
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public Set<Rol> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<Rol> roles) {
+		this.roles = roles;
 	}
 	public User(Long idUser) {
 		this.idUsers=idUser;

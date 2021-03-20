@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class CategoryController {
 	@Autowired
 	private ICategoryService service;
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("")
 	public List<Category> findAll(){
 		List<Category> categories=service.findAll();
@@ -35,6 +36,7 @@ public class CategoryController {
 		return categories;
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/")
 	public ResponseEntity<?> save(@RequestBody Category category){
 		try {
